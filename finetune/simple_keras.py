@@ -18,8 +18,11 @@ def get_tb_log_dir():
     runs = list()
     for dir in l:
         runs.append(int(dir.split('/run_')[1]))
-    max_run = max(l)
-    run = max_run + 1
+    if len(l):
+        max_run = max(l)
+        run = max_run + 1
+    else:
+        run = 0
     return TB_LOG_BASE_DIR + '/run_{}'.format(run)
 
 
