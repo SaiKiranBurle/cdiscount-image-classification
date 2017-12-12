@@ -19,7 +19,7 @@ def get_tb_log_dir():
     for dir in l:
         runs.append(int(dir.split('/run_')[1]))
     if len(l):
-        max_run = max(l)
+        max_run = max(runs)
         run = max_run + 1
     else:
         run = 0
