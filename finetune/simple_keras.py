@@ -6,6 +6,7 @@ from keras.layers.convolutional import Conv2D
 from keras.layers.pooling import MaxPooling2D, GlobalAveragePooling2D
 
 from data_generator import get_generator, NUM_CLASSES, NUM_TRAIN_SAMPLES, BATCH_SIZE, IMG_X, IMG_Y, NUM_CHANNELS
+from finetune.tensorboard import BatchTensorBoard
 
 
 def get_model():
@@ -53,8 +54,8 @@ def get_inception_model():
 
 
 def get_tensorboard_callback():
-    tb = keras.callbacks.TensorBoard(log_dir='./tb_logs', histogram_freq=0,
-                                     write_graph=True, write_images=False)
+    tb = BatchTensorBoard(log_dir='./tb_logs', histogram_freq=0,
+                          write_graph=False, write_images=False)
     return tb
 
 
