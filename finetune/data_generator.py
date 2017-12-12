@@ -33,11 +33,14 @@ NUM_TEST_SAMPLES = 1768182
 CATEGORIES_PATH = os.path.join(DATA_DIR, "category_names.csv")
 
 BATCH_SIZE = 128
+IMG_X = 180
+IMG_Y = 180
+NUM_CHANNELS = 3
 
 
 class BSONIterator(Iterator):
     def __init__(self, bson_file, images_df, offsets_df, num_class,
-                 image_data_generator, lock, target_size=(180, 180),
+                 image_data_generator, lock, target_size=(IMG_X, IMG_Y),
                  with_labels=True, batch_size=32, shuffle=False, seed=None):
 
         self.file = bson_file
@@ -234,6 +237,8 @@ def get_generator():
                            batch_size=BATCH_SIZE, shuffle=True)
     return train_gen, val_gen
 
+# Found 9902267 images belonging to 5270 classes.
+# Found 2469026 images belonging to 5270 classes. (20% of total)
 
 if __name__ == "__main__":
     # run_once()
