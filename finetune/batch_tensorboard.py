@@ -59,7 +59,7 @@ class BatchTensorBoard(Callback):
                  embeddings_freq=0,
                  embeddings_layer_names=None,
                  embeddings_metadata=None):
-        super(TensorBoard, self).__init__()
+        super(BatchTensorBoard, self).__init__()
         if K.backend() != 'tensorflow':
             raise RuntimeError('TensorBoard callback only works '
                                'with the TensorFlow backend.')

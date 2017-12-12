@@ -1,3 +1,5 @@
+from glob import glob
+
 import keras
 from keras.applications import InceptionV3
 from keras.models import Sequential, Model
@@ -7,6 +9,18 @@ from keras.layers.pooling import MaxPooling2D, GlobalAveragePooling2D
 
 from data_generator import get_generator, NUM_CLASSES, NUM_TRAIN_SAMPLES, BATCH_SIZE, IMG_X, IMG_Y, NUM_CHANNELS
 from batch_tensorboard import BatchTensorBoard
+
+TB_LOG_BASE_DIR = './tb_logs'
+
+
+def get_tb_log_dir():
+    l = glob(TB_LOG_BASE_DIR + '/run_*')
+    runs = list()
+    for dir in l:
+        runs.append(int(dir.split('/run_')[1]))
+    max_run = max(l)
+    run = max_run + 1
+    return TB_LOG_BASE_DIR + '/run_{}'.format(run)
 
 
 def get_model():
@@ -54,7 +68,7 @@ def get_inception_model():
 
 
 def get_tensorboard_callback():
-    tb = BatchTensorBoard(log_dir='./tb_logs', histogram_freq=0,
+    tb = BatchTensorBoard(log_dir=get_tb_log_dir(), histogram_freq=0,
                           write_graph=False, write_images=False)
     return tb
 
