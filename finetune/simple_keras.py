@@ -55,6 +55,7 @@ def get_inception_model():
 
     # Fully connected layer
     x = Dense(units=NUM_CLASSES * 5, activation='relu')(x)
+    x = Dropout(0.5)(x)
     # Logistic softmax layer
     predictions = Dense(NUM_CLASSES, activation='sigmoid')(x)
 
