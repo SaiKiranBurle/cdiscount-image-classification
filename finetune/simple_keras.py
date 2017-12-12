@@ -1,3 +1,4 @@
+import keras
 from keras.applications import InceptionV3
 from keras.models import Sequential, Model
 from keras.layers import Dropout, Flatten, Dense
@@ -51,12 +52,20 @@ def get_inception_model():
     return model
 
 
+def get_tensorboard_callback():
+    tb = keras.callbacks.TensorBoard(log_dir='./tb_logs', histogram_freq=0,
+                                     write_graph=True, write_images=False)
+    return tb
+
+
 if __name__ == "__main__":
     model = get_inception_model()
     train_gen, val_gen = get_generator()
+    tb = get_tensorboard_callback()
     model.fit_generator(train_gen,
                         steps_per_epoch=NUM_TRAIN_SAMPLES // BATCH_SIZE,  # num_train_images // batch_size,
                         epochs=3,
                         validation_data=val_gen,
                         validation_steps=2469026 // BATCH_SIZE,  # num_val_images // batch_size,
-                        workers=1)
+                        workers=1,
+                        callbacks=[tb])
