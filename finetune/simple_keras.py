@@ -72,7 +72,7 @@ def get_inception_model():
 
 def get_tensorboard_callback():
     tb = BatchTensorBoard(log_dir=get_tb_log_dir(), histogram_freq=0,
-                          write_graph=False, write_images=False)
+                          write_graph=False, write_images=False, write_batch_performance=True)
     return tb
 
 
