@@ -55,7 +55,7 @@ def get_inception_model():
 
     # Fully connected layer
     x = Dense(units=NUM_CLASSES * 5, activation='relu')(x)
-    x = Dropout(0.5)(x)
+    x = Dropout(0.2)(x)
     # Logistic softmax layer
     predictions = Dense(NUM_CLASSES, activation='sigmoid')(x)
 
@@ -71,6 +71,12 @@ def get_inception_model():
     return model
 
 
+def make_all_layers_trainable(model):
+    for l in model.layers:
+        l.trainable = True
+    model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+
+
 def get_tensorboard_callback():
     tb = BatchTensorBoard(log_dir=get_tb_log_dir(), histogram_freq=0,
                           write_graph=False, write_images=False, write_batch_performance=True)
@@ -82,9 +88,21 @@ if __name__ == "__main__":
     train_gen, val_gen = get_generator()
     tb = get_tensorboard_callback()
     model.fit_generator(train_gen,
-                        steps_per_epoch=NUM_TRAIN_SAMPLES // BATCH_SIZE,  # num_train_images // batch_size,
+                        steps_per_epoch=int(2e6) // BATCH_SIZE,  # num_train_images // batch_size,
                         epochs=3,
                         validation_data=val_gen,
-                        validation_steps=2469026 // BATCH_SIZE,  # num_val_images // batch_size,
-                        workers=1,
+                        validation_steps=int(1e4) // BATCH_SIZE,  # num_val_images // batch_size,
+                        use_multiprocessing=True,
+                        workers=4,
                         callbacks=[tb])
+    make_all_layers_trainable(model)
+    model.fit_generator(train_gen,
+                        steps_per_epoch=int(2e6) // BATCH_SIZE,  # num_train_images // batch_size,
+                        initial_epoch=3,
+                        epochs=8,
+                        validation_data=val_gen,
+                        validation_steps=int(1e4) // BATCH_SIZE,  # num_val_images // batch_size,
+                        use_multiprocessing=True,
+                        workers=4,
+                        callbacks=[tb])
+
