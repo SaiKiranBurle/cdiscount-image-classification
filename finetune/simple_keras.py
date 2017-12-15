@@ -92,8 +92,7 @@ if __name__ == "__main__":
                         epochs=3,
                         validation_data=val_gen,
                         validation_steps=int(1e4) // BATCH_SIZE,  # num_val_images // batch_size,
-                        use_multiprocessing=True,
-                        workers=4,
+                        workers=1,
                         callbacks=[tb])
     make_all_layers_trainable(model)
     model.fit_generator(train_gen,
@@ -102,7 +101,6 @@ if __name__ == "__main__":
                         epochs=8,
                         validation_data=val_gen,
                         validation_steps=int(1e4) // BATCH_SIZE,  # num_val_images // batch_size,
-                        use_multiprocessing=True,
-                        workers=4,
+                        workers=1,
                         callbacks=[tb])
 
